@@ -23,7 +23,24 @@ open probes and blocked work.
 - [ ] NIM_API_KEY availability for the D21 probe and the integration-gated
   CI job (`pytest -m integration`).
 
+## Completed (Week 1-2)
+
+- [x] **T1** Substrate sprint (D12 scorecard) — LangGraph accepted 5/5
+- [x] **T2** LLM adapter contract — NIM/Ollama/Fake + pacing (D6)
+- [x] **T3** Graph — Coder→Adversary→Critic→Arbiter + Verdict routing + HITL gate (D11)
+- [x] **T4** Audit sink — fail-closed SQLite DAG (D2, D7)
+- [x] **T5** Runner isolation — worktree + env scrub + timeout kill (D5)
+- [x] **T6** Diff apply contract — LF, git apply --check, patch_fix routing (D8)
+- [x] **T12** CLI entry point — `orchestrator` command with --tui/--plain/--nim/--auto-approve
+
+## Next (Week 3)
+
+- [ ] **T7** Tree-sitter chunker → Qdrant embedded (enrichment headers, FQN IDs, incremental)
+- [ ] **T8** Hybrid retrieval — sparse vectors + RRF fusion (D4)
+
 ## Done (no action)
 
 - D23 stats framing is fully specified in the design doc (held-out suites, n,
   effect size, variance, bug-type distribution) — no TODO required.
+
+(End of file - total 58 lines)
