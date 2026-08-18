@@ -36,7 +36,11 @@ jobs:
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras --group dev
       - name: NIM-gated integration tests
-        if: ${{ secrets.NIM_API_KEY != '' }}
-        run: uv run pytest -q -m integration
+        run: |
+          if [ -z "$NIM_API_KEY" ]; then
+            echo "NIM_API_KEY not set - skipping integration tests"
+            exit 0
+          fi
+          uv run pytest -q -m integration
         env:
           NIM_API_KEY: ${{ secrets.NIM_API_KEY }}
