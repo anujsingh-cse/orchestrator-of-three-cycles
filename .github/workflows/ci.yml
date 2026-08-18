@@ -31,12 +31,12 @@ jobs:
   integration-nim:
     runs-on: ubuntu-latest
     needs: lint-and-unit
-    if: ${{ secrets.NIM_API_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --all-extras --group dev
       - name: NIM-gated integration tests
+        if: ${{ secrets.NIM_API_KEY != '' }}
         run: uv run pytest -q -m integration
         env:
           NIM_API_KEY: ${{ secrets.NIM_API_KEY }}
