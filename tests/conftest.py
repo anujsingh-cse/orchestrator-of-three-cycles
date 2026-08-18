@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 import pytest
+from dotenv import load_dotenv
+
+load_dotenv()  # NIM_API_KEY from .env (gitignored) for local integration runs
 
 
 @pytest.fixture()

@@ -41,7 +41,7 @@ class NIMAdapter(LLMAdapter):
             api_key=api_key or os.getenv("NIM_API_KEY"),
             base_url=base_url or os.getenv("NIM_BASE_URL"),
             temperature=temperature,
-            extra_body={"chat_template_kwargs": template_kwargs},
+            chat_template_kwargs=template_kwargs,
         )
 
     def stream(self, messages: list[dict[str, str]], **kwargs) -> Iterator[str]:
