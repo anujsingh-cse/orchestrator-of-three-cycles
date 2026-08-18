@@ -1,0 +1,13 @@
+# D8: line-ending contract. Test worktrees MUST be LF so unified diffs
+# generated there apply cleanly anywhere (Windows CRLF is the default
+# failure mode this file exists to kill).
+* text=auto eol=lf
+
+# Explicit binary exclusions
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.db binary
+*.sqlite binary

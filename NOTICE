@@ -1,0 +1,16 @@
+# NOTICE — Failure Zoo Provenance Policy (D19)
+
+The failure zoo is a materialized view over the audit DAG (D9). Every specimen
+distributed with this repository MUST carry provenance in its metadata:
+
+- source repository URL and commit hash
+- source repository license
+- seed bug type tag (logic / off-by-one / rename / race / config)
+
+Specimens derived from repositories whose license does not permit
+redistribution of code fragments (e.g. GPL-family for verbatim code) are
+excluded from the distributed corpus or distilled to synthetic equivalents:
+hashes, diffs, and test names only — never verbatim code.
+
+This policy is a v0.1 release blocker (D19). The curating tooling lives in the
+zoo module (T9) and is exercised by CI on every release.
