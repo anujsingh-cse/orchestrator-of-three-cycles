@@ -64,8 +64,10 @@ def apply_patch(worktree_root: Path, patch_text: str) -> ApplyResult:
 
     check = _git_apply(check_only=True)
     if check.returncode != 0:
-        return ApplyResult(APPLY_REJECTED_CHECK, check.stderr.strip()[:500])
+        detail = check.stderr.decode("utf-8", errors="replace").strip()[:500]
+        return ApplyResult(APPLY_REJECTED_CHECK, detail)
     applied = _git_apply(check_only=False)
     if applied.returncode != 0:
-        return ApplyResult(APPLY_REJECTED_CHECK, applied.stderr.strip()[:500])
+        detail = applied.stderr.decode("utf-8", errors="replace").strip()[:500]
+        return ApplyResult(APPLY_REJECTED_CHECK, detail)
     return ApplyResult(APPLY_APPLIED, touched=touched_paths(patch))
