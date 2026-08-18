@@ -8,6 +8,7 @@ Failure policy: 400/401/404/410/5xx/timeouts FAIL the suite. 429 (free-tier
 quota drained) is retried with backoff, then reported as a warning — it is an
 environmental condition, not a regression (capacity is probed by D21).
 """
+
 from __future__ import annotations
 
 import os
@@ -20,9 +21,7 @@ from orchestrator.roster import MODEL_ROSTER, NIM_MEASURED_RPM
 
 pytestmark = pytest.mark.integration
 
-pytest.importorskip(
-    "langchain_nvidia_ai_endpoints", reason="install with: uv sync --extra nim"
-)
+pytest.importorskip("langchain_nvidia_ai_endpoints", reason="install with: uv sync --extra nim")
 
 RETRIES = 2
 BACKOFF_S = 20

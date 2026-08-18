@@ -1,4 +1,5 @@
 """LLM adapter contract tests (D6) against the deterministic FakeAdapter."""
+
 from __future__ import annotations
 
 import pytest

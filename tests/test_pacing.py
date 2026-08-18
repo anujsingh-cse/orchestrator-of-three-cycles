@@ -1,4 +1,5 @@
 """D6 pacing unit tests: leaky bucket, jittered backoff, circuit breaker."""
+
 from __future__ import annotations
 
 import time

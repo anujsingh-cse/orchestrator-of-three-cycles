@@ -1,4 +1,5 @@
 """Ollama drop-in implementation (P4: one-line swap, zero cost by design)."""
+
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Iterator

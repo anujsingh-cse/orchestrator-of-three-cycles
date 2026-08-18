@@ -1,4 +1,5 @@
 """Deterministic fake LLM for tests, spikes, and CI (no API key needed)."""
+
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Iterator

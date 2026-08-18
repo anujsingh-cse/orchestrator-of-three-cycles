@@ -4,6 +4,7 @@ Release-blocking (D11):
 - replay-twice-identical-events: same inputs -> same hashes, same chain.
 - gapped sessions must be refused at startup.
 """
+
 from __future__ import annotations
 
 import pytest

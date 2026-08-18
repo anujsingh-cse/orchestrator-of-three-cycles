@@ -1,4 +1,5 @@
 """Audit sink — fail-closed, write-ahead, startup integrity check (D2/D7)."""
+
 from __future__ import annotations
 
 import sqlite3

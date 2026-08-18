@@ -1,4 +1,5 @@
 """AuditEvent schema — the causal DAG record (D2: sole authority)."""
+
 from __future__ import annotations
 
 import hashlib

@@ -9,6 +9,7 @@ Corrections (recorded in the design doc):
 
 Draft model is chosen by the probe in TODOS.md (D22) — `None` until measured.
 """
+
 from __future__ import annotations
 
 MODEL_ROSTER: dict[str, str | None] = {

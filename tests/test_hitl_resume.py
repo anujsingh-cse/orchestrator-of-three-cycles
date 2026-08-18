@@ -4,6 +4,7 @@ LangGraph gotcha under test: resumed nodes replay from the top of the node;
 the gate node must be side-effect-free, and the coder must not re-run when
 the thread resumes via Command(resume=...).
 """
+
 from __future__ import annotations
 
 from typing import TypedDict

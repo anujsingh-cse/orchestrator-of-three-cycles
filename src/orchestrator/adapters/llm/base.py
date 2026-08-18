@@ -1,4 +1,5 @@
 """LLM adapter contract (P4 seam) with the D6 pacing discipline."""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
