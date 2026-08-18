@@ -71,7 +71,8 @@ class FakeAdapter(LLMAdapter):
         return True
 
     def _note_failure(self, exc: Exception) -> None:
-        if getattr(exc, "status_code", None) == 429 or "429" in str(exc):
+        status = getattr(exc, "status_code", None)
+        if status == 429 or "429" in str(exc) or status == 503:
             self._pacer.report_rate_limited()
 
     def _render(self, messages: list[dict[str, str]]) -> str:

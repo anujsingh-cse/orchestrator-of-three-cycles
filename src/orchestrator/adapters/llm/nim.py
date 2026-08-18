@@ -91,5 +91,7 @@ class NIMAdapter(LLMAdapter):
 
     def _note_failure(self, exc: Exception) -> None:
         status = getattr(exc, "status_code", None)
-        if status == 429 or "429" in str(exc):
+        # 429 = rate limit; 503 = transient server overload (observed at
+        # conc=8 in the D21 probe). Both slow down and retry via pacing.
+        if status == 429 or "429" in str(exc) or status == 503:
             self._pacer.report_rate_limited()

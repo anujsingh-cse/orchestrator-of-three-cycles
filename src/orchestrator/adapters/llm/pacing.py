@@ -1,8 +1,9 @@
 """D6: per-model pacing — leaky bucket + jittered backoff + circuit breaker.
 
 Lives in the LLM adapter contract (P4 seam) so NIM, Ollama, and any future
-provider share one pacing path. Defaults are placeholders until the D21
-rate-limit probe produces measured ceilings.
+provider share one pacing path. Defaults are placeholders; per-model measured
+ceilings live in `roster.NIM_MEASURED_RPM` (D21 probe, 2026-08-18) and the
+graph wiring (T3) builds pacers from them.
 """
 from __future__ import annotations
 

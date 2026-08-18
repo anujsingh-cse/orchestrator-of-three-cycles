@@ -6,10 +6,12 @@ open probes and blocked work.
 
 ## Open probes
 
-- [ ] **D21 — NIM rate-limit probe**: hit the free tier with the real model
-  roster (deepseek-v4-flash, glm-5.2, nemotron-3-ultra-550b-a55b) at increasing
-  concurrency until 429s appear; record rpm ceiling + per-model variance.
-  Output: `PacingConfig` defaults in `src/orchestrator/adapters/llm/pacing.py`.
+- [x] **D21 — NIM rate-limit probe**: DONE 2026-08-18. Ceilings measured per
+  model (see `roster.NIM_MEASURED_RPM`): coder nemotron-3-super-120b-a12b
+  ~60 rpm (no 429 at conc=8); critic nemotron-3-ultra-550b-a55b ~20-25 rpm
+  with a transient 503 at conc=8 (now paced); adversary glm-5.2 ~10.6 rpm
+  (second run quota-drained). DeepSeek endpoints all dead (410/hang) —
+  coder reassigned, see `roster.py`.
 - [ ] **D22 — Ollama draft-model probe**: pull a candidate 8B (qwen3:8b
   unconfirmed), measure draft quality on 10 adversarial prompts vs NIM
   critic; decide `OLLAMA_DRAFT_MODEL`. Output: `roster.py` "draft" entry.
