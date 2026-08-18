@@ -1,6 +1,6 @@
 # ADR 0001 — Substrate scorecard (D12)
 
-Status: **PROPOSED** (verdict lands here when the week-1 spike completes)
+Status: **ACCEPTED** — LangGraph remains the substrate (spike results 2026-08-18)
 Date: 2026-08-18
 
 ## Context
@@ -28,19 +28,33 @@ gets PASS / FAIL / n/a-with-reason.
 
 | # | LangGraph | OpenHands | Notes |
 |---|-----------|-----------|-------|
-| 1 | **PASS** | _pending_ | fresh-thread replay matched final state (spike run 2026-08-18) |
-| 2 | **PASS** | _pending_ | paused at gate; coder ran exactly once across interrupt+resume |
-| 3 | **PASS** | _pending_ | two models bound to two nodes, one call each |
-| 4 | **PASS** (n/a by design) | _pending_ | no workspace abstraction; process-local |
-| 5 | **PASS** | _pending_ | sqlite checkpointer; zero container runtime |
+| 1 | **PASS** | **PASS** | LangGraph: fresh-thread replay matched final state. OpenHands: EventLog replay stable across reads + process-restart, orphan append rejected (chain enforcement) |
+| 2 | **PASS** | n/a (T4) | LangGraph: paused at gate; coder ran exactly once across interrupt+resume. OpenHands: `interrupt()`/`pause()` + InterruptEvent/PauseEvent observed in SDK |
+| 3 | **PASS** | n/a (T4) | LangGraph: two models bound to two nodes, one call each. OpenHands: LLMRegistry + FallbackStrategy + Agent.CriticMixin observed |
+| 4 | **PASS** (n/a by design) | **PASS** | OpenHands: LocalWorkspace file upload/download round-trip on Windows |
+| 5 | **PASS** | **PASS** | Both: sqlite/file-store local; no container runtime in the exercised path |
 
 ## Decision (filled when verdicts are in)
 
-- [ ] **ACCEPTED**: LangGraph remains the substrate (all 5 PASS or OpenHands
-      FAILed any).
+- [x] **ACCEPTED**: LangGraph remains the substrate (both candidates 5/5 — no
+      criterion FAIL on either; the switch rule was never triggered).
 - [ ] **REJECTED / SWITCH**: OpenHands SDK becomes the substrate (all 5 PASS
       on OpenHands AND at least one criterion FAILs on LangGraph).
 
 Superpowers the reviewer must re-check on any switch: D2 (audit DAG sole
 authority — SDK EventService disabled), D6 (pacing lives in our adapter
 layer regardless), D8 (diff apply contract is substrate-agnostic).
+
+**Post-decision notes for the graph build (T3/T4):**
+- OpenHands SDK v1.42.1 ships `EventLog` with parent_id causal chains,
+  file-backed persistence, and orphan rejection — its event stream is
+  compatible with our AuditEvent DAG (D2) and is a candidate replay source
+  if the SDK is ever adopted.
+- `Agent` ships a `CriticMixin`; `LLMRegistry` + `FallbackStrategy` could
+  cover our router role — evaluated in week 2 if we adopt the SDK.
+- The SDK banner prints on import unless `OPENHANDS_SUPPRESS_BANNER=1`.
+- **Gotcha (D5):** `LocalWorkspace.file_upload`/`file_download` resolve
+  *relative* destination paths against the process CWD, not the workspace
+  `working_dir` — a file written with a relative path escapes the worktree
+  (verified 2026-08-18). The runner must pass absolute destinations and the
+  D5 env-scrub must include `PWD`/`CWD` hygiene.
