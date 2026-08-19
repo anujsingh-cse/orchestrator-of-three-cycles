@@ -14,7 +14,7 @@ from __future__ import annotations
 
 MODEL_ROSTER: dict[str, str | None] = {
     "coder": "nvidia/nemotron-3-super-120b-a12b",
-    "adversary": "z-ai/glm-5.2",
+    "adversary": "nvidia/nemotron-3-ultra-550b-a55b",
     "critic": "nvidia/nemotron-3-ultra-550b-a55b",
     "strategist": "nvidia/nemotron-3-ultra-550b-a55b",
     "draft": None,  # Ollama 8B, chosen by D22 probe
@@ -23,9 +23,8 @@ MODEL_ROSTER: dict[str, str | None] = {
 # Per-model template kwargs, verified against build.nvidia.com model pages.
 # Passed through ChatNVIDIA extra_body -> NIM chat_template_kwargs.
 NIM_TEMPLATE_KWARGS: dict[str, dict[str, object]] = {
-    "nvidia/nemotron-3-super-120b-a12b": {"enable_thinking": False},  # coder: fast
-    "nvidia/nemotron-3-ultra-550b-a55b": {"enable_thinking": True},  # full-thinking critic
-    "z-ai/glm-5.2": {},  # default template
+    "nvidia/nemotron-3-super-120b-a12b": {"enable_thinking": False},
+    "nvidia/nemotron-3-ultra-550b-a55b": {"enable_thinking": True},
 }
 
 # FastEmbed, local (no API). Enrichment headers per D3; swap flag-gated.
@@ -33,10 +32,9 @@ EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 EMBEDDING_DIM = 384
 
 # D21 probe (2026-08-18): measured free-tier ceilings at 80% safety margin.
-# glm-5.2 ceiling estimated from the pre-quota run (10.6 rpm observed before
-# the first 429); the second run was quota-drained and returned 429s.
+# nemotron-3-ultra-550b-a55b used for both critic and adversary.
 NIM_MEASURED_RPM: dict[str, int] = {
     "coder": 47,  # nemotron-3-super-120b-a12b: no 429 at conc=8, 59.5 rpm observed
-    "adversary": 8,  # glm-5.2: 10.6 rpm observed before first 429
+    "adversary": 16,  # nemotron-3-ultra-550b-a55b: 20-25.5 rpm observed, 503 at conc=8
     "critic": 16,  # nemotron-3-ultra-550b-a55b: 20-25.5 rpm observed, 503 at conc=8
 }
