@@ -1,8 +1,7 @@
-"""CLI entry point — run a falsification session with TUI or plain streaming."""
-
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import uuid
 from collections.abc import Callable, Iterator
@@ -24,8 +23,10 @@ from orchestrator.runner.worktree import create_worktree
 def build_adapters(use_nim: bool, api_key: str | None) -> dict[str, LLMAdapter]:
     """Build the four role adapters with per-model pacing."""
     if use_nim:
+        # Fall back to env var if --api-key not provided
+        api_key = api_key or os.environ.get("NIM_API_KEY")
         if not api_key:
-            raise ValueError("NIM_API_KEY required for --nim mode")
+            raise ValueError("NIM_API_KEY required for --nim mode (use --api-key or set NIM_API_KEY env)")
         return {
             "coder": NIMAdapter(
                 MODEL_ROSTER["coder"],
