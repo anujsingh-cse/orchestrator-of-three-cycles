@@ -1,69 +1,75 @@
 # Orchestrator of Three Cycles
 
-Research harness: does an **adversarial falsification loop** (Coder proposes →
-Adversary attacks → Critic arbitrates → patches fix the attack) produce
-measurably more robust patches than a flat single-shot loop, at zero cost on
-the NVIDIA NIM free tier?
+**The big question:** Does having AI agents argue with each other produce better code fixes than a single AI working alone?
 
-Status: **Week 1 — substrate sprint + scaffold in progress** (design doc:
-`docs/decisions/0001-substrate-scorecard.md` + approved plan).
+## What This Does
 
-## Premises (revised, office-hours 2026-08-18)
+Imagine three AI agents working together to fix a bug:
 
-- P1: research harness; the deliverable is *evidence* (controlled ablation,
-  held-out suites, effect sizes — not a product).
-- P2: minimal safe-execution tier day one: git worktrees + process isolation +
-  allowlists. Docker deferred.
-- P3: adversarial falsification is the sole headline; RAPTOR/KG/tri-fusion are
-  flag-gated experimental extras.
-- P3a: OpenHands V1 SDK is evaluated as an alternative substrate in the week-1
-  sprint (scorecard: `docs/decisions/0001-substrate-scorecard.md`).
-- P3b: the failure zoo (falsified patches + attacks, with provenance) is a
-  headline deliverable.
-- P4: NIM zero-cost is a community feature; Ollama is a one-line drop-in.
+1. **The Coder** — proposes a fix
+2. **The Adversary** — tries to break the fix (finds edge cases, security holes, logic errors)
+3. **The Critic** — judges whether the fix actually works and addresses the attacks
 
-## Architecture (week-1 seam view)
+They go back and forth until the Critic says "this is good" or "needs more work." A human gatekeeper approves the final fix before it's applied.
 
-```
-                  ┌─ audit DAG (SQLite, D2/D7) ── sole authority ──┐
-                  │                                                ▼
-[TUI] → [Graph: Coder→Adversary→Critic→Arbiter] → [AuditSink] → [Zoo view (D9)]
-          │
-          └── [LLMAdapter (D6)] ─ NIM (zero-cost) ─ Ollama (drop-in)
-              pacing: leaky bucket + jittered backoff + circuit breaker
-```
+We run this loop against a **control group** (single AI, no debate) on real bugs from real projects. The goal: measurable evidence that the debate loop produces more robust fixes.
 
-## Setup
+## What You Get
+
+- **Evidence, not a product** — This is a research tool. The output is data: which approach works better, by how much, and on what kinds of bugs.
+- **A "failure zoo"** — Every broken fix and attack is saved with full provenance. This becomes a regression corpus for future research.
+- **Zero API cost** — Runs on NVIDIA's free NIM tier. Local Ollama models work as a drop-in alternative.
+
+## Quick Start (Windows PowerShell)
 
 ```powershell
-uv sync --all-extras            # or: uv sync --extra nim
-Copy-Item .env.example .env     # then paste your NIM_API_KEY
-uv run pytest -q                # unit suite (mocked LLM, no key needed)
+# 1. Install dependencies
+uv sync --all-extras
+
+# 2. Add your free NVIDIA NIM API key
+# Get one at https://build.nvidia.com
+Copy-Item .env.example .env
+# Edit .env and paste your key
+
+# 3. Run tests (no API key needed for unit tests)
+uv run pytest -q
 ```
 
-## Substrate spike (week 1, D12)
-
-```powershell
-uv run python scripts/spike_langgraph.py    # runnable now, mocked LLM
-uv run python scripts/spike_openhands.py    # needs uv sync --extra openhands
-```
-
-The 5-criteria scorecard and current verdict live in
-`docs/decisions/0001-substrate-scorecard.md`.
-
-## Layout
+## How It Works (Plain English)
 
 ```
-src/orchestrator/
-  adapters/llm/   LLM seam: pacing (D6), NIM, Ollama drop-in
-  audit/          AuditEvent schema + fail-closed SQLite sink (D2/D7)
-scripts/          substrate spikes, run helpers
-tests/            unit + release-blocking tests (D11)
-docs/decisions/   scorecard + ADRs
+User Task → [Coder proposes fix] → [Adversary attacks] → [Critic judges] → [Human approves] → Done
+                    ↑_____________|_____________↑
+                         Loop repeats until Critic is satisfied
 ```
 
-## Deliverable contract (D19)
+Every step is recorded in an audit log (SQLite) that can be replayed exactly.
 
-The distributed corpus is the failure zoo, with provenance and license
-policy per `NOTICE`. Release-blocking tests are listed in
-`docs/decisions/0001-substrate-scorecard.md` and `TODOS.md`.
+## Current Status
+
+**Week 3 of 4** — Core loop, audit system, retrieval, failure zoo, and ablation runner all working. 124 tests passing.
+
+Remaining:
+- **T13** — CI pipeline with integration tests
+- **D22** — Test a local 8B model as a fast "draft" fallback
+
+## Key Files
+
+| Folder | Purpose |
+|--------|---------|
+| `src/orchestrator/adapters/llm/` | Connects to NIM (free) or Ollama (local) |
+| `src/orchestrator/graph/` | The 3-agent debate loop |
+| `src/orchestrator/audit/` | Tamper-proof session log |
+| `src/orchestrator/retrieval/` | Finds relevant code for the agents |
+| `src/orchestrator/ablation/` | Runs controlled experiments |
+| `src/orchestrator/zoo/` | Builds the failure corpus |
+| `scripts/` | Quick spikes and probes |
+| `tests/` | 124 tests (unit + integration) |
+
+## Why This Matters
+
+Most AI coding tools work in one shot: you ask, they answer. But bugs often hide in edge cases. By forcing an adversarial debate, we catch those hidden flaws before the code ships — and we measure whether it actually helps.
+
+## License
+
+MIT — open source. The failure zoo data follows the license of each source repository (see `NOTICE`).
