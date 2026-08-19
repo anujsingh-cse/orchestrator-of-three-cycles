@@ -35,8 +35,8 @@ open probes and blocked work.
 
 ## Next (Week 3)
 
-- [ ] **T7** Tree-sitter chunker → Qdrant embedded (enrichment headers, FQN IDs, incremental)
-- [ ] **T8** Hybrid retrieval — sparse vectors + RRF fusion (D4)
+- [x] **T7** Tree-sitter chunker → Qdrant embedded (enrichment headers, FQN IDs, incremental)
+- [x] **T8** Hybrid retrieval — sparse vectors + RRF fusion (D4)
 
 ## Done (no action)
 

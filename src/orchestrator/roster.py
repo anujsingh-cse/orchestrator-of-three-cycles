@@ -29,7 +29,7 @@ NIM_TEMPLATE_KWARGS: dict[str, dict[str, object]] = {
 }
 
 # FastEmbed, local (no API). Enrichment headers per D3; swap flag-gated.
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 EMBEDDING_DIM = 384
 
 # D21 probe (2026-08-18): measured free-tier ceilings at 80% safety margin.

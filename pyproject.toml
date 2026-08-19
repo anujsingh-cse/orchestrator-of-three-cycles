@@ -12,6 +12,9 @@ dependencies = [
     "qdrant-client>=1.12",
     "fastembed>=0.4",
     "textual>=0.80",
+    "tree-sitter>=0.26",
+    "tree-sitter-python>=0.25",
+    "python-dotenv>=1.2.3",
 ]
 
 [project.optional-dependencies]
