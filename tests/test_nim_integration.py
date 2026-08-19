@@ -4,9 +4,10 @@ Marked ``integration`` (pyproject) — runs only when NIM_API_KEY is present;
 the CI job gates it inside the script (ci.yml). Paced with the D21 measured
 ceilings (roster.NIM_MEASURED_RPM).
 
-Failure policy: 400/401/404/410/5xx/timeouts FAIL the suite. 429 (free-tier
-quota drained) is retried with backoff, then reported as a warning — it is an
-environmental condition, not a regression (capacity is probed by D21).
+Failure policy: 400/401/404/410/timeouts FAIL the suite. 429 (free-tier
+quota drained) and 503 (service temporarily overloaded) are retried with
+backoff, then reported as warnings — they are environmental conditions, not
+regressions (capacity is probed by D21).
 """
 
 from __future__ import annotations
@@ -44,12 +45,15 @@ def _complete_with_retry(
         except CircuitOpenError:
             return None, "rate-limited (circuit open)"
         except Exception as exc:  # noqa: BLE001 - provider errors are opaque
-            if "429" in str(exc) and attempt < RETRIES:
+            exc_str = str(exc)
+            if ("429" in exc_str or "503" in exc_str) and attempt < RETRIES:
                 time.sleep(BACKOFF_S)
                 continue
-            if "429" in str(exc):
+            if "429" in exc_str:
                 return None, "rate-limited (quota drained)"
-            return None, str(exc)
+            if "503" in exc_str:
+                return None, "service-overloaded (503)"
+            return None, exc_str
     return None, "unreachable"
 
 
@@ -73,7 +77,7 @@ def test_roster_models_respond(nim_key: str) -> None:
         )
         elapsed = time.perf_counter() - t0
         if problem:
-            if problem.startswith("rate-limited"):
+            if problem.startswith("rate-limited") or problem.startswith("service-overloaded"):
                 warnings.append(f"{role}: {model} -> {problem}")
                 print(f"  {role:10s} {model:42s} {elapsed:5.1f}s {problem}")
             else:
