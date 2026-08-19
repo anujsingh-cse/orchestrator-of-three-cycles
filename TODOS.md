@@ -21,8 +21,8 @@ open probes and blocked work.
 - [x] Explicit go for `uv sync --extra openhands` + spike execution on the
   OpenHands SDK — DONE 2026-08-19. All 5 criteria PASS (C1, C4, C5 directly;
   C2, C3 observed in SDK surface).
-- [ ] NIM_API_KEY availability for the D21 probe and the integration-gated
-  CI job (`pytest -m integration`).
+- [x] NIM_API_KEY availability for the D21 probe and the integration-gated
+  CI job (`pytest -m integration`) — DONE 2026-08-19. Integration test passes.
 
 ## Completed (Week 1-2)
 
