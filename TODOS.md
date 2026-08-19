@@ -41,6 +41,7 @@ open probes and blocked work.
 - [x] **T9** Failure zoo — DAG view, provenance, distillation (D9, D19)
 - [x] **T10** Control arm + corpus — flat loop, seed corpus methodology (D17, D18)
 - [x] **T11** Ablation runner — bounded parallel lanes (D16) + report stats (D23)
+- [x] **T12** TUI status pane — textual + streaming fallback (D20)
 
 ## Done (no action)
 
