@@ -43,6 +43,10 @@ open probes and blocked work.
 - [x] **T11** Ablation runner — bounded parallel lanes (D16) + report stats (D23)
 - [x] **T12** TUI status pane — textual + streaming fallback (D20)
 
+## Next (Week 4)
+
+- [x] **T13** CI — lint, unit tests, integration test with fixture repo against NIM, prompt smoke evals (D13)
+
 ## Done (no action)
 
 - D23 stats framing is fully specified in the design doc (held-out suites, n,

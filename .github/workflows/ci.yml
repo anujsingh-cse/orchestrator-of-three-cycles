@@ -16,6 +16,16 @@ jobs:
       - name: Unit suite (mocked LLM, no key needed)
         run: uv run pytest -q
 
+  prompt-smoke:
+    runs-on: ubuntu-latest
+    needs: lint-and-unit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-extras --group dev
+      - name: Prompt smoke evals (D13) - 5 cases per agent
+        run: uv run python -m evals.prompt_smoke
+
   substrate-spike:
     runs-on: ubuntu-latest
     needs: lint-and-unit
