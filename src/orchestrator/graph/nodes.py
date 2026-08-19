@@ -45,6 +45,8 @@ def _emit(
         model_id=model_id,
         input_hash=AuditEvent.content_hash(payload_in),
         output_hash=AuditEvent.content_hash(payload_out),
+        payload_in=payload_in,
+        payload_out=payload_out,
         tool_calls=tool_calls or [],
         tokens_in=tokens_in,
         tokens_out=tokens_out,
@@ -57,8 +59,14 @@ def _strip_fence(text: str) -> str:
     """Pull a unified diff out of ```diff ... ``` fences if present."""
     match = re.search(r"```diff\s*\n(.*?)```", text, re.DOTALL)
     if match:
-        return match.group(1).strip()
-    return text.strip()
+        text = match.group(1).strip()
+    # Strip index lines (fake hashes from models break git apply)
+    lines = []
+    for line in text.splitlines():
+        if line.startswith("index "):
+            continue
+        lines.append(line)
+    return "\n".join(lines).strip()
 
 
 def _parse_verdict(text: str) -> Verdict:

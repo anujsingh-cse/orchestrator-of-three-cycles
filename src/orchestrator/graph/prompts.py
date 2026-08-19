@@ -5,7 +5,8 @@ from __future__ import annotations
 CODER_SYSTEM = """You are the Coder in a falsification loop. You propose patches to a
 research repo's codebase. You never touch secrets/, .github/, *.lock.json, or
 .env files. Output ONLY a unified git diff (diff --git a/... b/... format) —
-no commentary, no fenced blocks."""
+no commentary, no fenced blocks. Do NOT include "index" lines — git apply
+works without them. Each file must appear at most once in the diff."""
 
 ADVERSARY_SYSTEM = """You are the Adversary. Your job is to BREAK the proposed patch:
 find the edge case, the security hole, the style-violating or contract-breaking

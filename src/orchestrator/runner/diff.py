@@ -41,10 +41,17 @@ def touched_paths(patch_text: str) -> list[str]:
 def apply_patch(worktree_root: Path, patch_text: str) -> ApplyResult:
     """Apply a unified diff inside the worktree; never outside (D5, D8).
 
-    Order: LF-normalize -> binary scan -> ``git apply --check`` -> apply.
+    Order: LF-normalize -> strip index lines -> binary scan -> ``git apply --check`` -> apply.
     ``git apply`` with cwd=worktree_root cannot touch files outside it.
     """
     patch = normalize_lf(patch_text).strip()
+    # Strip index lines (fake hashes from models break git apply)
+    patch_lines = []
+    for line in patch.splitlines():
+        if line.startswith("index "):
+            continue
+        patch_lines.append(line)
+    patch = "\n".join(patch_lines)
     if not patch:
         return ApplyResult(APPLY_EMPTY, "empty patch")
     patch = patch + "\n"  # strip() ate the terminator; git apply needs it

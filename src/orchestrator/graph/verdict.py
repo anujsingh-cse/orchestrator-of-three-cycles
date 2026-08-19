@@ -24,8 +24,8 @@ ESCALATION_PATTERN = (
 )
 
 # T3: loop budgets (design doc: coder <= 3, adversary <= 2).
-MAX_CODER_ROUNDS = 3
-MAX_ADVERSARY_ROUNDS = 2
+MAX_CODER_ROUNDS = 5
+MAX_ADVERSARY_ROUNDS = 4
 
 
 def touched_paths(patch_text: str) -> list[str]:

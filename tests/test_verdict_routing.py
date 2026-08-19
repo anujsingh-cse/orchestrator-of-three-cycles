@@ -36,7 +36,8 @@ class TestRouteFromCoder:
         assert route_from_coder(_state(adversary_rounds=0)) == "adversary"
 
     def test_adversary_budget_spent_skips_to_critic(self) -> None:
-        assert route_from_coder(_state(adversary_rounds=2)) == "critic"
+        # MAX_ADVERSARY_ROUNDS = 4 now
+        assert route_from_coder(_state(adversary_rounds=4)) == "critic"
 
     def test_adversary_budget_never_negative(self) -> None:
         assert route_from_coder(_state(adversary_rounds=5)) == "critic"
@@ -85,7 +86,8 @@ class TestRouteFromRunner:
         assert route_from_runner(_state(test_passed=False, coder_rounds=2)) == "coder"
 
     def test_failed_tests_exhausted_budget_ends(self) -> None:
-        assert route_from_runner(_state(test_passed=False, coder_rounds=3)) == END
+        # MAX_CODER_ROUNDS = 5 now
+        assert route_from_runner(_state(test_passed=False, coder_rounds=5)) == END
 
 
 class TestEscalation:

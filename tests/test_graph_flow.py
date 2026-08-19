@@ -161,21 +161,21 @@ class TestBudget:
         patch = _make_patch(repo)
         graph = build_session_graph(
             adapters={
-                "coder": FakeAdapter([patch] * 3, "fake-coder"),
-                "adversary": FakeAdapter(["flaw A"] * 2, "fake-adversary"),
-                "critic": FakeAdapter(["defect 1"] * 3, "fake-critic"),
-                "arbiter": FakeAdapter(["verdict: patch_fix\nround again"] * 3, "fake-arbiter"),
+                "coder": FakeAdapter([patch] * 5, "fake-coder"),
+                "adversary": FakeAdapter(["flaw A"] * 4, "fake-adversary"),
+                "critic": FakeAdapter(["defect 1"] * 5, "fake-critic"),
+                "arbiter": FakeAdapter(["verdict: patch_fix\nround again"] * 5, "fake-arbiter"),
             },
             sink=sink,
             worktree_root=create_worktree(repo, repo.parent / "worktrees", "wt-2"),
         )
         updates = run_session(graph, task="add helper()", thread_id="t1")
         nodes = [list(u)[0] for u in updates]
-        assert nodes.count("coder") == 3
-        assert nodes.count("adversary") == 2  # skipped once budget spent
+        assert nodes.count("coder") == 5
+        assert nodes.count("adversary") == 4  # skipped once budget spent
         assert "gate" not in nodes  # budget_exhausted never reaches the human
         arbiter_events = [e for e in sink.session_events("t1") if e.node == "arbiter"]
-        assert len(arbiter_events) == 3
+        assert len(arbiter_events) == 5
         assert arbiter_events[-1].node == "arbiter"
         sink.verify_integrity("t1")
 

@@ -8,7 +8,10 @@ from collections.abc import Callable, Iterator
 from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
 from langgraph.types import Command
+
+load_dotenv()  # loads .env from project root
 
 from orchestrator.adapters.llm.base import LLMAdapter
 from orchestrator.adapters.llm.fake import FakeAdapter
@@ -87,13 +90,19 @@ def stream_updates(
         "escalated": [],
         "test_passed": None,
     }
-    for update in graph.stream(initial, config=config, stream_mode="updates"):
-        yield update
-        if "__interrupt__" in update:
-            payload = update["__interrupt__"][0].value
-            yield from graph.stream(
-                Command(resume=decide(payload)), config=config, stream_mode="updates"
-            )
+    # Handle multiple interrupts by looping
+    input_state = initial
+    while True:
+        had_interrupt = False
+        for update in graph.stream(input_state, config=config, stream_mode="updates"):
+            yield update
+            if "__interrupt__" in update:
+                payload = update["__interrupt__"][0].value
+                input_state = Command(resume=decide(payload))
+                had_interrupt = True
+                break  # restart stream with resume command
+        if not had_interrupt:
+            break
 
 
 def run_tui(task: str, repo_path: Path, adapters: dict, thread_id: str, decide) -> int:

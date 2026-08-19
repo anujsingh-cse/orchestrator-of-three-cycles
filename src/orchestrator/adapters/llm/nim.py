@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import time
 from collections.abc import AsyncIterator, Iterator
 
 from orchestrator.adapters.llm.base import LLMAdapter, LLMResponse
@@ -13,6 +14,21 @@ try:  # optional extra: uv sync --extra nim
     from langchain_nvidia_ai_endpoints import ChatNVIDIA
 except ImportError:  # pragma: no cover - exercised at runtime
     ChatNVIDIA = None
+
+
+RETRIES = 2
+BACKOFF_S = 20
+
+
+def _is_retryable(exc: Exception) -> bool:
+    exc_str = str(exc)
+    return (
+        "429" in exc_str
+        or "502" in exc_str
+        or "503" in exc_str
+        or "504" in exc_str
+        or "timed out" in exc_str.lower()
+    )
 
 
 class NIMAdapter(LLMAdapter):
@@ -69,20 +85,31 @@ class NIMAdapter(LLMAdapter):
 
     def complete(self, messages: list[dict[str, str]], **kwargs) -> LLMResponse:
         self._pacer.acquire()
-        try:
-            result = self._llm.invoke(messages, **kwargs)
-            usage = (result.response_metadata or {}).get("token_usage", {})
-            self._pacer.report_success()
-            return LLMResponse(
-                text=str(result.content),
-                finish_reason=str(result.response_metadata.get("finish_reason", "")),
-                tokens_in=int(usage.get("prompt_tokens", 0)),
-                tokens_out=int(usage.get("completion_tokens", 0)),
-                model_id=self.model_id,
-            )
-        except Exception as exc:  # noqa: BLE001
-            self._note_failure(exc)
-            raise
+        last_exc = None
+        for attempt in range(RETRIES + 1):
+            try:
+                result = self._llm.invoke(messages, **kwargs)
+                usage = (result.response_metadata or {}).get("token_usage", {})
+                self._pacer.report_success()
+                return LLMResponse(
+                    text=str(result.content),
+                    finish_reason=str(result.response_metadata.get("finish_reason", "")),
+                    tokens_in=int(usage.get("prompt_tokens", 0)),
+                    tokens_out=int(usage.get("completion_tokens", 0)),
+                    model_id=self.model_id,
+                )
+            except Exception as exc:  # noqa: BLE001
+                last_exc = exc
+                if _is_retryable(exc) and attempt < RETRIES:
+                    time.sleep(BACKOFF_S)
+                    continue
+                self._note_failure(exc)
+                raise
+        # Should not reach here, but just in case
+        if last_exc:
+            self._note_failure(last_exc)
+            raise last_exc
+        raise RuntimeError("complete: unexpected exit from retry loop")
 
     def health(self) -> bool:
         try:
