@@ -45,14 +45,6 @@ User Task → [Coder proposes fix] → [Adversary attacks] → [Critic judges] �
 
 Every step is recorded in an audit log (SQLite) that can be replayed exactly.
 
-## Current Status
-
-**Week 3 of 4** — Core loop, audit system, retrieval, failure zoo, and ablation runner all working. 124 tests passing.
-
-Remaining:
-- **T13** — CI pipeline with integration tests
-- **D22** — Test a local 8B model as a fast "draft" fallback
-
 ## Key Files
 
 | Folder | Purpose |
