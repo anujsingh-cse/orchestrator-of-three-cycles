@@ -26,7 +26,10 @@ def build_adapters(use_nim: bool, api_key: str | None) -> dict[str, LLMAdapter]:
         # Fall back to env var if --api-key not provided
         api_key = api_key or os.environ.get("NIM_API_KEY")
         if not api_key:
-            raise ValueError("NIM_API_KEY required for --nim mode (use --api-key or set NIM_API_KEY env)")
+            raise ValueError(
+                "NIM_API_KEY required for --nim mode "
+                "(use --api-key or set NIM_API_KEY env)"
+            )
         return {
             "coder": NIMAdapter(
                 MODEL_ROSTER["coder"],
