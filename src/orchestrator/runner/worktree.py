@@ -45,3 +45,17 @@ def remove_worktree(source_repo: Path, worktree_root: Path) -> None:
         text=True,
         timeout=120,
     )
+
+
+class WorktreeManager:
+    """Simple wrapper for worktree operations."""
+
+    def __init__(self, source_repo: Path, bases_root: Path) -> None:
+        self.source_repo = source_repo
+        self.bases_root = bases_root
+
+    def create(self, thread_id: str) -> Path:
+        return create_worktree(self.source_repo, self.bases_root, thread_id)
+
+    def destroy(self, worktree_root: Path) -> None:
+        remove_worktree(self.source_repo, worktree_root)

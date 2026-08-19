@@ -15,6 +15,7 @@ dependencies = [
     "tree-sitter>=0.26",
     "tree-sitter-python>=0.25",
     "python-dotenv>=1.2.3",
+    "langchain-nvidia-ai-endpoints>=1.4.3",
 ]
 
 [project.optional-dependencies]

@@ -16,9 +16,12 @@ import os
 import time
 
 import pytest
+from dotenv import load_dotenv
 
 from orchestrator.adapters.llm.pacing import CircuitOpenError, Pacer, PacingConfig
 from orchestrator.roster import MODEL_ROSTER, NIM_MEASURED_RPM
+
+load_dotenv()
 
 pytestmark = pytest.mark.integration
 
@@ -46,13 +49,20 @@ def _complete_with_retry(
             return None, "rate-limited (circuit open)"
         except Exception as exc:  # noqa: BLE001 - provider errors are opaque
             exc_str = str(exc)
-            if ("429" in exc_str or "503" in exc_str) and attempt < RETRIES:
+            is_retryable = (
+                "429" in exc_str
+                or "503" in exc_str
+                or "timed out" in exc_str.lower()
+            )
+            if is_retryable and attempt < RETRIES:
                 time.sleep(BACKOFF_S)
                 continue
             if "429" in exc_str:
                 return None, "rate-limited (quota drained)"
             if "503" in exc_str:
                 return None, "service-overloaded (503)"
+            if "timed out" in exc_str.lower():
+                return None, "timeout"
             return None, exc_str
     return None, "unreachable"
 
@@ -77,7 +87,12 @@ def test_roster_models_respond(nim_key: str) -> None:
         )
         elapsed = time.perf_counter() - t0
         if problem:
-            if problem.startswith("rate-limited") or problem.startswith("service-overloaded"):
+            is_transient = (
+                problem.startswith("rate-limited")
+                or problem.startswith("service-overloaded")
+                or problem == "timeout"
+            )
+            if is_transient:
                 warnings.append(f"{role}: {model} -> {problem}")
                 print(f"  {role:10s} {model:42s} {elapsed:5.1f}s {problem}")
             else:

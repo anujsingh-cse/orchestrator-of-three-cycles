@@ -18,8 +18,9 @@ open probes and blocked work.
 
 ## Blocked on user
 
-- [ ] Explicit go for `uv sync --extra openhands` + spike execution on the
-  OpenHands SDK (deferred by design — you control the install moment).
+- [x] Explicit go for `uv sync --extra openhands` + spike execution on the
+  OpenHands SDK — DONE 2026-08-19. All 5 criteria PASS (C1, C4, C5 directly;
+  C2, C3 observed in SDK surface).
 - [ ] NIM_API_KEY availability for the D21 probe and the integration-gated
   CI job (`pytest -m integration`).
 
@@ -39,6 +40,7 @@ open probes and blocked work.
 - [x] **T8** Hybrid retrieval — sparse vectors + RRF fusion (D4)
 - [x] **T9** Failure zoo — DAG view, provenance, distillation (D9, D19)
 - [x] **T10** Control arm + corpus — flat loop, seed corpus methodology (D17, D18)
+- [x] **T11** Ablation runner — bounded parallel lanes (D16) + report stats (D23)
 
 ## Done (no action)
 
