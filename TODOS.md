@@ -37,6 +37,8 @@ open probes and blocked work.
 
 - [x] **T7** Tree-sitter chunker → Qdrant embedded (enrichment headers, FQN IDs, incremental)
 - [x] **T8** Hybrid retrieval — sparse vectors + RRF fusion (D4)
+- [x] **T9** Failure zoo — DAG view, provenance, distillation (D9, D19)
+- [x] **T10** Control arm + corpus — flat loop, seed corpus methodology (D17, D18)
 
 ## Done (no action)
 

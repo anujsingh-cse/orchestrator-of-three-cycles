@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS events (
     ts TEXT NOT NULL,
     input_hash TEXT NOT NULL,
     output_hash TEXT NOT NULL,
+    payload_in TEXT NOT NULL DEFAULT '{}',
+    payload_out TEXT NOT NULL DEFAULT '{}',
     tool_calls TEXT NOT NULL DEFAULT '[]',
     tokens_in INTEGER NOT NULL DEFAULT 0,
     tokens_out INTEGER NOT NULL DEFAULT 0,
@@ -55,10 +57,14 @@ class AuditSink:
     def write_ahead(self, event: AuditEvent) -> str:
         """Persist before the transition; returns the authority id."""
         try:
+            sql = (
+                "INSERT INTO events (id, parent_event_id, thread_id, node, agent_id, "
+                "model_id, ts, input_hash, output_hash, payload_in, payload_out, "
+                "tool_calls, tokens_in, tokens_out, gate_decision) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            )
             self._conn.execute(
-                "INSERT INTO events (id, parent_event_id, thread_id, node, agent_id, model_id, ts,"
-                " input_hash, output_hash, tool_calls, tokens_in, tokens_out, gate_decision)"
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                sql,
                 (
                     event.id,
                     event.parent_event_id,
@@ -69,6 +75,8 @@ class AuditSink:
                     event.ts.isoformat(),
                     event.input_hash,
                     event.output_hash,
+                    json_dumps(event.payload_in),
+                    json_dumps(event.payload_out),
                     json_dumps(event.tool_calls),
                     event.tokens_in,
                     event.tokens_out,
@@ -89,6 +97,13 @@ class AuditSink:
     def children_of(self, parent_id: str) -> list[AuditEvent]:
         rows = self._conn.execute(
             "SELECT * FROM events WHERE parent_event_id = ? ORDER BY ts, rowid", (parent_id,)
+        ).fetchall()
+        return [self._row_to_event(row) for row in rows]
+
+    def read_all(self) -> list[AuditEvent]:
+        """Return all events in chronological order (for zoo rebuild)."""
+        rows = self._conn.execute(
+            "SELECT * FROM events ORDER BY ts, rowid"
         ).fetchall()
         return [self._row_to_event(row) for row in rows]
 
@@ -134,10 +149,12 @@ class AuditSink:
             ts=row[6],
             input_hash=row[7],
             output_hash=row[8],
-            tool_calls=json_loads(row[9]),
-            tokens_in=row[10],
-            tokens_out=row[11],
-            gate_decision=row[12],
+            payload_in=json_loads(row[9]),
+            payload_out=json_loads(row[10]),
+            tool_calls=json_loads(row[11]),
+            tokens_in=row[12],
+            tokens_out=row[13],
+            gate_decision=row[14],
         )
 
 

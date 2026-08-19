@@ -33,6 +33,8 @@ class AuditEvent(BaseModel):
     ts: datetime = Field(default_factory=lambda: datetime.now(UTC))
     input_hash: str
     output_hash: str
+    payload_in: dict[str, Any] = Field(default_factory=dict)
+    payload_out: dict[str, Any] = Field(default_factory=dict)
     tool_calls: list[dict[str, Any]] = Field(default_factory=list)
     tokens_in: int = 0
     tokens_out: int = 0
