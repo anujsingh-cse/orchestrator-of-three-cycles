@@ -100,6 +100,7 @@ class TestHappyPath:
         )
         node_names = [list(u)[0] for u in updates if "__interrupt__" not in u]
         assert node_names == [
+            "recon",
             "coder",
             "adversary",
             "critic",
@@ -111,6 +112,7 @@ class TestHappyPath:
 
         sink.verify_integrity("t1")  # causal chain intact (D2)
         events = sink.session_events("t1")
+        # recon doesn't write an audit event
         assert _event_nodes(sink, "t1") == [
             "coder",
             "adversary",
@@ -141,6 +143,7 @@ class TestGate:
         assert not runner_seen
         sink.verify_integrity("t1")
         events = sink.session_events("t1")
+        # recon doesn't write an audit event
         assert _event_nodes(sink, "t1") == ["coder", "adversary", "critic", "arbiter", "gate"]
         assert events[-1].gate_decision == "reject"
 

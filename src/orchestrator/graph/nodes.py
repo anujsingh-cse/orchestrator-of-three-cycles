@@ -83,7 +83,11 @@ def make_coder(adapter: LLMAdapter, sink: AuditSink, agent_id: str) -> NodeFn:
     def coder(state: SessionState) -> dict[str, Any]:
         round_no = state.get("coder_rounds", 0) + 1
         messages = coder_prompt(
-            state["task"], state.get("attack", ""), state.get("critique", ""), round_no
+            state["task"],
+            state.get("attack", ""),
+            state.get("critique", ""),
+            round_no,
+            state.get("file_context"),
         )
         response = adapter.complete(messages)
         patch = _strip_fence(response.text)

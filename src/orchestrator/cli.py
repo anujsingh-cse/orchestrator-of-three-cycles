@@ -239,7 +239,9 @@ def run_plain(updates_fn: Callable[[], Iterator[dict[str, Any]]]) -> int:
     return 0
 
 
-def _summarize(node: str, payload: dict[str, Any]) -> str:
+def _summarize(node: str, payload: dict[str, Any] | None) -> str:
+    if payload is None:
+        return "no payload"
     if node in ("coder", "runner"):
         return f"patch {len(payload.get('patch', ''))} chars"
     if node == "arbiter":

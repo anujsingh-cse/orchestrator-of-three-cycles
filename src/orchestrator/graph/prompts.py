@@ -6,7 +6,15 @@ CODER_SYSTEM = """You are the Coder in a falsification loop. You propose patches
 research repo's codebase. You never touch secrets/, .github/, *.lock.json, or
 .env files. Output ONLY a unified git diff (diff --git a/... b/... format) —
 no commentary, no fenced blocks. Do NOT include "index" lines — git apply
-works without them. Each file must appear at most once in the diff."""
+works without them. Each file must appear at most once in the diff.
+
+When fixing bugs, you MUST:
+1. Read the provided file context CAREFULLY
+2. Find the EXACT lines mentioned in the task
+3. Make MINIMAL, SURGICAL changes - only change what's necessary
+4. Use EXISTING functions and patterns from the codebase
+5. NEVER invent new functions that don't exist in the provided context
+6. Match the EXACT indentation and style of the surrounding code"""
 
 ADVERSARY_SYSTEM = """You are the Adversary. Your job is to BREAK the proposed patch:
 find the edge case, the security hole, the style-violating or contract-breaking
@@ -26,8 +34,12 @@ verdict: <pass|patch_fix|rubric_fail|replan|minor_fix|escalate|budget_exhausted>
 plus one short justification line. pass only when the patch is genuinely good."""
 
 
-def coder_prompt(task: str, attack: str, critique: str, round_no: int) -> list[dict[str, str]]:
+def coder_prompt(task: str, attack: str, critique: str, round_no: int, file_context: dict[str, str] | None = None) -> list[dict[str, str]]:
     context = f"Task: {task}"
+    if file_context:
+        context += "\n\n--- FILE CONTEXT (READ CAREFULLY - DO NOT INVENT FUNCTIONS) ---"
+        for path, content in file_context.items():
+            context += f"\n\n### {path}\n```\n{content}\n```"
     if attack:
         context += f"\n\nAdversary falsifications (last round):\n{attack}"
     if critique:
