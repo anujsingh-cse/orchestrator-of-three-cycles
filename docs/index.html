@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Orchestrator of Three Cycles — Does adversarial AI debate produce better code fixes?">
+  <meta name="theme-color" content="#0a0f1a">
+  <title>Orchestrator of Three Cycles — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <button class="mobile-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidebar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="page-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Documentation navigation">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+          Orchestrator
+        </div>
+        <p class="sidebar-tagline">Three-Cycle Falsification Loop</p>
+      </div>
+
+      <nav class="nav-section">
+        <div class="nav-title">Getting Started</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#quick-start" class="nav-link active">Quick Start</a></li>
+          <li class="nav-item"><a href="#installation" class="nav-link">Installation</a></li>
+          <li class="nav-item"><a href="#basic-usage" class="nav-link">Basic Usage</a></li>
+        </ul>
+      </nav>
+
+      <nav class="nav-section">
+        <div class="nav-title">Use Cases</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#local-repo" class="nav-link">Local Git Repository</a></li>
+          <li class="nav-item"><a href="#github-repo" class="nav-link">GitHub Repository</a></li>
+          <li class="nav-item"><a href="#non-git" class="nav-link">Non-Git Codebase</a></li>
+          <li class="nav-item"><a href="#nim-models" class="nav-link">Real AI Models (NIM)</a></li>
+          <li class="nav-item"><a href="#tui-mode" class="nav-link">Interactive TUI Mode</a></li>
+          <li class="nav-item"><a href="#human-approval" class="nav-link">Human Approval Mode</a></li>
+        </ul>
+      </nav>
+
+      <nav class="nav-section">
+        <div class="nav-title">Understanding</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#what-happens" class="nav-link">What Happens</a></li>
+          <li class="nav-item"><a href="#output-explained" class="nav-link">Output Explained</a></li>
+          <li class="nav-item"><a href="#key-terms" class="nav-link">Key Terms</a></li>
+        </ul>
+      </nav>
+
+      <nav class="nav-section">
+        <div class="nav-title">Configuration</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#env-vars" class="nav-link">Environment Variables</a></li>
+          <li class="nav-item"><a href="#model-roster" class="nav-link">Model Roster</a></li>
+        </ul>
+      </nav>
+
+      <nav class="nav-section">
+        <div class="nav-title">Advanced</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#specific-branch" class="nav-link">Specific Branch</a></li>
+          <li class="nav-item"><a href="#custom-tests" class="nav-link">Custom Test Command</a></li>
+          <li class="nav-item"><a href="#audit-log" class="nav-link">Audit Log</a></li>
+        </ul>
+      </nav>
+
+      <nav class="nav-section">
+        <div class="nav-title">Reference</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#troubleshooting" class="nav-link">Troubleshooting</a></li>
+          <li class="nav-item"><a href="#architecture" class="nav-link">Architecture</a></li>
+          <li class="nav-item"><a href="#contributing" class="nav-link">Contributing</a></li>
+          <li class="nav-item"><a href="#license" class="nav-link">License</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content" role="main">
+      <header class="content-header">
+        <span class="content-badge">Research Harness v0.1.0</span>
+        <h1>Orchestrator of Three Cycles</h1>
+        <p class="lead">Does having AI agents argue with each other produce better code fixes than a single AI working alone?</p>
+      </header>
+
+      <section class="section" id="quick-start">
+        <div class="section-header">
+          <h2>Quick Start</h2>
+        </div>
+        <p class="lead-paragraph">Get up and running in under 2 minutes.</p>
+
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M1 20h20v-20H1z"></path>
+              </svg>
+            </div>
+            <h3 class="card-title">Prerequisites</h3>
+            <ul style="margin: 0; padding-left: 20px;">
+              <li>Python 3.12+</li>
+              <li><code>uv</code> package manager</li>
+              <li>Git repository to work on</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+            </div>
+            <h3 class="card-title">Install Dependencies</h3>
+            <pre><code>uv sync --all-extras</code></pre>
+          </div>
+          <div class="card">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+                <path d="M8 21h8"></path>
+                <path d="M12 17v4"></path>
+              </svg>
+            </div>
+            <h3 class="card-title">Add API Key (Optional)</h3>
+            <pre><code>cp .env.example .env
+# Edit .env with your NIM key</code></pre>
+          </div>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 No API Key? No Problem</div>
+          <p>Run without <code>--nim</code> flag to use built-in fake models for testing the flow.</p>
+        </div>
+      </section>
+
+      <section class="section" id="installation">
+        <div class="section-header">
+          <h2>Installation</h2>
+        </div>
+
+        <h3>Clone the Repository</h3>
+        <pre><code>git clone https://github.com/anujsingh-cse/orchestrator-of-three-cycles.git
+cd orchestrator-of-three-cycles</code></pre>
+
+        <h3>Install <code>uv</code> (if not installed)</h3>
+        <pre><code># macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+irm https://astral.sh/uv/install.ps1 | iex
+
+# Or via pip
+pip install uv</code></pre>
+
+        <h3>Install Project Dependencies</h3>
+        <pre><code>uv sync --all-extras</code></pre>
+
+        <h3>Verify Installation</h3>
+        <pre><code>uv run orchestrator --help</code></pre>
+
+        <p>You should see the help output with all available options.</p>
+      </section>
+
+      <section class="section" id="basic-usage">
+        <div class="section-header">
+          <h2>Basic Usage</h2>
+        </div>
+
+        <h3>Command Structure</h3>
+        <pre><code>uv run orchestrator "your task description" [options]</code></pre>
+
+        <h3>Available Options</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Flag</th>
+                <th>Description</th>
+                <th>Default</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--repo PATH</code></td>
+                <td>Path to repository</td>
+                <td>Current directory</td>
+              </tr>
+              <tr>
+                <td><code>--nim</code></td>
+                <td>Use NVIDIA NIM models (needs API key)</td>
+                <td>Off (fake models)</td>
+              </tr>
+              <tr>
+                <td><code>--api-key KEY</code></td>
+                <td>NIM API key</td>
+                <td>Reads from <code>.env</code></td>
+              </tr>
+              <tr>
+                <td><code>--tui</code></td>
+                <td>Use Textual TUI interface</td>
+                <td>Plain text streaming</td>
+              </tr>
+              <tr>
+                <td><code>--auto-approve</code></td>
+                <td>Auto-approve human gate</td>
+                <td>Reject (human must approve)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="local-repo">
+        <div class="section-header">
+          <h2>Use Case: Local Git Repository</h2>
+        </div>
+
+        <p>Fix bugs in any local git repository on your machine.</p>
+
+        <pre><code># Navigate to your repository
+cd /path/to/your/repo
+
+# Run the orchestrator
+uv run orchestrator "fix the login timeout bug" --repo . --auto-approve</code></pre>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 Tip</div>
+          <p>The <code>--repo .</code> uses the current directory. You can also use absolute or relative paths: <code>--repo ../other-project</code></p>
+        </div>
+
+        <h3>Requirements</h3>
+        <ul>
+          <li>Directory must be a git repository (<code>.git</code> folder exists)</li>
+          <li>Repository should have a test suite (pytest by default)</li>
+          <li>Code should be in a language the models understand (Python, JS, TS, Go, Rust, etc.)</li>
+        </ul>
+      </section>
+
+      <section class="section" id="github-repo">
+        <div class="section-header">
+          <h2>Use Case: GitHub Repository</h2>
+        </div>
+
+        <p>Clone and fix bugs in any public or private GitHub repository.</p>
+
+        <pre><code># Clone the repository
+git clone https://github.com/owner/repo.git
+cd repo
+
+# Run the orchestrator
+uv run orchestrator "fix the memory leak in data processor" --repo . --auto-approve</code></pre>
+
+        <h3>For Private Repositories</h3>
+        <pre><code># Clone with SSH (if you have SSH keys set up)
+git clone git@github.com:owner/private-repo.git
+cd private-repo
+
+# Or use HTTPS with token
+git clone https://ghp_yourtoken@github.com/owner/private-repo.git</code></pre>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">⚠️ Private Repos</div>
+          <p>Make sure your Git credentials are configured. The orchestrator uses the repository as-is — it doesn't manage auth.</p>
+        </div>
+      </section>
+
+      <section class="section" id="non-git">
+        <div class="section-header">
+          <h2>Use Case: Non-Git Codebase (Any Files)</h2>
+        </div>
+
+        <p>The orchestrator requires a git repository. For non-git folders, initialize git first:</p>
+
+        <pre><code>cd /path/to/your/code
+
+# Initialize git (one-time setup)
+git init
+git add .
+git commit -m "initial commit"
+
+# Now run the orchestrator
+uv run orchestrator "add error handling to parser" --repo . --auto-approve</code></pre>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 Why Git?</div>
+          <p>The tool uses git worktrees for isolation — each patch is applied in a disposable clone so your original code is never modified until you approve.</p>
+        </div>
+      </section>
+
+      <section class="section" id="nim-models">
+        <div class="section-header">
+          <h2>Use Case: Real AI Models (NVIDIA NIM Free Tier)</h2>
+        </div>
+
+        <p>Use production-quality models for real fixes. Free tier available.</p>
+
+        <h3>Get Your Free API Key</h3>
+        <ol>
+          <li>Go to <a href="https://build.nvidia.com" target="_blank">build.nvidia.com</a></li>
+          <li>Sign in / create account</li>
+          <li>Generate an API key</li>
+        </ol>
+
+        <h3>Configure</h3>
+        <pre><code># Option 1: Add to .env file
+echo "NIM_API_KEY=nvapi-your-key-here" > .env
+
+# Option 2: Pass via flag
+uv run orchestrator "refactor the auth module" --repo . --nim --api-key nvapi-xxx --auto-approve</code></pre>
+
+        <h3>Run with NIM</h3>
+        <pre><code>uv run orchestrator "fix the race condition in cache" --repo . --nim --auto-approve</code></pre>
+
+        <div class="callout callout-info">
+          <div class="callout-title">ℹ️ Model Roster</div>
+          <p><strong>Coder:</strong> nemotron-3-super-120b (fast, coding-optimized)<br>
+          <strong>Adversary:</strong> nemotron-3-ultra-550b (deep reasoning)<br>
+          <strong>Critic:</strong> nemotron-3-ultra-550b (judgment)</p>
+        </div>
+      </section>
+
+      <section class="section" id="tui-mode">
+        <div class="section-header">
+          <h2>Use Case: Interactive TUI Mode</h2>
+        </div>
+
+        <p>Visual terminal interface with live streaming updates.</p>
+
+        <pre><code>uv run orchestrator "fix the race condition" --repo . --tui --auto-approve</code></pre>
+
+        <div class="card">
+          <h4 style="margin-top: 0;">TUI Features</h4>
+          <ul style="margin: 0;">
+            <li>Live token streaming from each agent</li>
+            <li>Visual flow diagram with current node highlighted</li>
+            <li>Session log with expandable details</li>
+            <li>Keyboard shortcuts (Q to quit)</li>
+          </ul>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">⚠️ Terminal Requirements</div>
+          <li>Needs a proper TTY (not all CI terminals work)</li>
+          <li>Minimum 80x24 terminal size</li>
+          <li>Use plain mode (<code>--tui</code> omitted) for CI/scripts</li>
+        </div>
+      </section>
+
+      <section class="section" id="human-approval">
+        <div class="section-header">
+          <h2>Use Case: Human Approval Mode (Default)</h2>
+        </div>
+
+        <p>Review each patch before it's applied to your codebase.</p>
+
+        <pre><code>uv run orchestrator "add input validation" --repo .</code></pre>
+
+        <h3>What You'll See</h3>
+        <pre><code>[coder] patch 247 chars
+[adversary] 3 keys
+[critic] 2 keys
+[arbiter] verdict=pass escalated=[]
+[HITL] Approve applying this patch?
+> Type 'approve' or 'reject'</code></pre>
+
+        <p>Type <code>approve</code> to apply the patch and run tests, or <code>reject</code> to stop.</p>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 When to Use</div>
+          <p>Use human approval for production codebases. Use <code>--auto-approve</code> for experimentation and CI.</p>
+        </div>
+      </section>
+
+      <section class="section" id="what-happens">
+        <div class="section-header">
+          <h2>What Happens When You Run It</h2>
+        </div>
+
+        <div class="flow-diagram">
+          <div class="flow-step">
+            <div class="flow-number">1</div>
+            <div class="flow-content">
+              <div class="flow-title">You Run Command</div>
+              <div class="flow-desc">Task description + repo path + options</div>
+            </div>
+          </div>
+          <div class="flow-arrow">▼</div>
+
+          <div class="flow-step">
+            <div class="flow-number">2</div>
+            <div class="flow-content">
+              <div class="flow-title">Coder Proposes Fix</div>
+              <div class="flow-desc">Generates a unified diff patch for the task</div>
+            </div>
+          </div>
+          <div class="flow-arrow">▼</div>
+
+          <div class="flow-step">
+            <div class="flow-number">3</div>
+            <div class="flow-content">
+              <div class="flow-title">Adversary Attacks</div>
+              <div class="flow-desc">Finds edge cases, security holes, logic errors in the patch</div>
+            </div>
+          </div>
+          <div class="flow-arrow">▼</div>
+
+          <div class="flow-step">
+            <div class="flow-number">4</div>
+            <div class="flow-content">
+              <div class="flow-title">Critic Judges</div>
+              <div class="flow-desc">Decides: PASS (fix works) or ESCALATE (needs human review)</div>
+            </div>
+          </div>
+          <div class="flow-arrow">▼</div>
+
+          <div class="flow-step">
+            <div class="flow-number">5</div>
+            <div class="flow-content">
+              <div class="flow-title">Human Gate (HITL)</div>
+              <div class="flow-desc">You approve/reject (or auto-approve with flag)</div>
+            </div>
+          </div>
+          <div class="flow-arrow">▼</div>
+
+          <div class="flow-step">
+            <div class="flow-number">6</div>
+            <div class="flow-content">
+              <div class="flow-title">Runner Applies & Tests</div>
+              <div class="flow-desc">Applies patch in isolated worktree, runs test suite</div>
+            </div>
+          </div>
+          <div class="flow-arrow">▼</div>
+
+          <div class="flow-step">
+            <div class="flow-number">7</div>
+            <div class="flow-content">
+              <div class="flow-title">Loop or Done</div>
+              <div class="flow-desc">If tests fail → back to Coder (max 5 rounds). If pass → done.</div>
+            </div>
+          </div>
+        </div>
+
+        <p>Every step is recorded in an audit log (SQLite) that can be replayed exactly.</p>
+      </section>
+
+      <section class="section" id="output-explained">
+        <div class="section-header">
+          <h2>Output Explained</h2>
+        </div>
+
+        <h3>Plain Text Mode (Default)</h3>
+        <pre><code>[coder] patch 247 chars
+[adversary] 3 keys
+[critic] 2 keys
+[arbiter] verdict=pass escalated=[]
+[HITL] Approve applying this patch?
+[gate] decision=approve
+[record_gate] 1 keys
+[runner] patch 0 chars
+[done] session finished</code></pre>
+
+        <h3>What Each Line Means</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Line</th>
+                <th>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>[coder] patch N chars</code></td>
+                <td>Coder produced a diff of N characters</td>
+              </tr>
+              <tr>
+                <td><code>[adversary] N keys</code></td>
+                <td>Adversary found N attack vectors</td>
+              </tr>
+              <tr>
+                <td><code>[critic] N keys</code></td>
+                <td>Critic evaluated N criteria</td>
+              </tr>
+              <tr>
+                <td><code>[arbiter] verdict=X</code></td>
+                <td>Final verdict: pass, escalate, patch_fix, etc.</td>
+              </tr>
+              <tr>
+                <td><code>[HITL] ...</code></td>
+                <td>Human-in-the-loop approval prompt</td>
+              </tr>
+              <tr>
+                <td><code>[gate] decision=X</code></td>
+                <td>Gate recorded your decision</td>
+              </tr>
+              <tr>
+                <td><code>[runner] patch N chars</code></td>
+                <td>Patch applied (0 = clean apply)</td>
+              </tr>
+              <tr>
+                <td><code>[done] session finished</code></td>
+                <td>Session complete</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="key-terms">
+        <div class="section-header">
+          <h2>Key Terms</h2>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Term</th>
+                <th>Definition</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Falsification Loop</strong></td>
+                <td>The 3-agent debate cycle: Coder → Adversary → Critic</td>
+              </tr>
+              <tr>
+                <td><strong>HITL</strong></td>
+                <td>Human-In-The-Loop — the approval gate</td>
+              </tr>
+              <tr>
+                <td><strong>Worktree</strong></td>
+                <td>Isolated git clone where patches are tested</td>
+              </tr>
+              <tr>
+                <td><strong>Audit DAG</strong></td>
+                <td>Directed acyclic graph of all events (SQLite)</td>
+              </tr>
+              <tr>
+                <td><strong>Verdict</strong></td>
+                <td>Critic's judgment: pass, escalate, patch_fix, replan, etc.</td>
+              </tr>
+              <tr>
+                <td><strong>Pacing</strong></td>
+                <td>Rate limiting per model to avoid API 429 errors</td>
+              </tr>
+              <tr>
+                <td><strong>Draft Model</strong></td>
+                <td>Local Ollama model for fast speculative execution</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="env-vars">
+        <div class="section-header">
+          <h2>Environment Variables</h2>
+        </div>
+
+        <p>Create a <code>.env</code> file in the project root (copy from <code>.env.example</code>):</p>
+
+        <pre><code># Required for --nim mode
+NIM_API_KEY=nvapi-your-key-here
+
+# Optional: custom NIM endpoint
+NIM_BASE_URL=https://integrate.api.nvidia.com/v1
+
+# Local Ollama (alternative to NIM)
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_DRAFT_MODEL=qwen3:8b</code></pre>
+
+        <h3>Variable Reference</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Required</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>NIM_API_KEY</code></td>
+                <td>For <code>--nim</code></td>
+                <td>NVIDIA NIM API key from build.nvidia.com</td>
+              </tr>
+              <tr>
+                <td><code>NIM_BASE_URL</code></td>
+                <td>No</td>
+                <td>Custom NIM endpoint (default: build.nvidia.com)</td>
+              </tr>
+              <tr>
+                <td><code>OLLAMA_HOST</code></td>
+                <td>No</td>
+                <td>Ollama server URL (default: localhost:11434)</td>
+              </tr>
+              <tr>
+                <td><code>OLLAMA_DRAFT_MODEL</code></td>
+                <td>No</td>
+                <td>Local model for draft/routing (default: qwen3:8b)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="model-roster">
+        <div class="section-header">
+          <h2>Model Roster</h2>
+        </div>
+
+        <p>Models are auto-configured based on verified availability (updated 2026-08-18):</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Model</th>
+                <th>Purpose</th>
+                <th>RPM Limit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Coder</td>
+                <td>nemotron-3-super-120b-a12b</td>
+                <td>Fast code generation</td>
+                <td>47</td>
+              </tr>
+              <tr>
+                <td>Adversary</td>
+                <td>nemotron-3-ultra-550b-a55b</td>
+                <td>Deep adversarial reasoning</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td>Critic</td>
+                <td>nemotron-3-ultra-550b-a55b</td>
+                <td>Judgment & evaluation</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td>Draft</td>
+                <td>Ollama (qwen3:8b)</td>
+                <td>Local speculative execution</td>
+                <td>Unlimited (local)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">ℹ️ RPM Limits</div>
+          <p>Per-model rate limits measured on NIM free tier with 80% safety margin. The pacer automatically handles 429 responses with exponential backoff.</p>
+        </div>
+      </section>
+
+      <section class="section" id="specific-branch">
+        <div class="section-header">
+          <h2>Advanced: Specific Branch</h2>
+        </div>
+
+        <pre><code>cd /path/to/repo
+git checkout feature-branch
+uv run orchestrator "fix the bug" --repo . --auto-approve</code></pre>
+
+        <p>The orchestrator works on the currently checked-out branch. Changes are applied to that branch's worktree.</p>
+      </section>
+
+      <section class="section" id="custom-tests">
+        <div class="section-header">
+          <h2>Advanced: Custom Test Command</h2>
+        </div>
+
+        <p>Default test command: <code>pytest -q -x</code></p>
+
+        <p>To customize, edit <code>src/orchestrator/runner/process.py</code>:</p>
+
+        <pre><code>def run_tests(
+    worktree_root: Path,
+    timeout_s: float = 120.0,
+    command: list[str] | None = None  # <-- customize this
+) -> TestResult:
+    cmd = command or ["pytest", "-q", "-x"]</code></pre>
+
+        <p>Or fork the repo and modify the runner for your test framework (Jest, Cargo test, Go test, etc.).</p>
+      </section>
+
+      <section class="section" id="audit-log">
+        <div class="section-header">
+          <h2>Advanced: Audit Log</h2>
+        </div>
+
+        <p>Every session creates an audit database:</p>
+
+        <pre><code>your-repo/.orchestrator/audit.db</code></pre>
+
+        <h3>Query the Audit Log</h3>
+        <pre><code># View all events
+uv run python -c "
+import sqlite3
+conn = sqlite3.connect('your-repo/.orchestrator/audit.db')
+for row in conn.execute('SELECT node, ts, gate_decision FROM events'):
+    print(row)
+"
+
+# View session tree
+uv run python -c "
+import sqlite3
+conn = sqlite3.connect('your-repo/.orchestrator/audit.db')
+for row in conn.execute('SELECT id, parent_event_id, node, model_id FROM events'):
+    print(row)
+"</code></pre>
+
+        <h3>Schema</h3>
+        <pre><code>CREATE TABLE events (
+    id TEXT PRIMARY KEY,
+    parent_event_id TEXT,
+    thread_id TEXT NOT NULL,
+    node TEXT NOT NULL,
+    agent_id TEXT NOT NULL,
+    model_id TEXT NOT NULL,
+    ts TEXT NOT NULL,
+    input_hash TEXT NOT NULL,
+    output_hash TEXT NOT NULL,
+    payload_in TEXT NOT NULL DEFAULT '{}',
+    payload_out TEXT NOT NULL DEFAULT '{}',
+    tool_calls TEXT NOT NULL DEFAULT '[]',
+    tokens_in INTEGER NOT NULL DEFAULT 0,
+    tokens_out INTEGER NOT NULL DEFAULT 0,
+    gate_decision TEXT
+);</code></pre>
+      </section>
+
+      <section class="section" id="troubleshooting">
+        <div class="section-header">
+          <h2>Troubleshooting</h2>
+        </div>
+
+        <div class="card-grid">
+          <div class="card">
+            <h4 class="card-title">"Not a git repository"</h4>
+            <pre><code>git init
+git add .
+git commit -m "init"</code></pre>
+          </div>
+          <div class="card">
+            <h4 class="card-title">"NIM_API_KEY required"</h4>
+            <pre><code># Use fake models (no key)
+uv run orchestrator "task" --repo . --auto-approve
+
+# Or add key to .env
+echo "NIM_API_KEY=your-key" > .env</code></pre>
+          </div>
+          <div class="card">
+            <h4 class="card-title">"Textual not installed"</h4>
+            <pre><code>uv sync --extra textual
+# Or use plain mode (default)</code></pre>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Tests fail after patch</h4>
+            <p>The loop continues automatically (up to 5 coder rounds). If it keeps failing, the adversary may have found a fundamental issue.</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Stale audit.db</h4>
+            <pre><code>rm your-repo/.orchestrator/audit.db
+# Re-run - creates fresh schema</code></pre>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Permission denied</h4>
+            <pre><code># On Linux/macOS
+chmod +x .venv/bin/orchestrator</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="architecture">
+        <div class="section-header">
+          <h2>Architecture Overview</h2>
+        </div>
+
+        <div class="flow-diagram">
+          <div style="font-family: var(--font-mono); font-size: 12px; line-height: 1.6; white-space: pre; overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                        CLI Entry Point                       │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+         ┌─────────────────┼─────────────────┐
+         ▼                 ▼                 ▼
+┌────────────────┐ ┌────────────────┐ ┌────────────────┐
+│   Adapters     │ │    Graph       │ │    Audit       │
+│  (LLM Seam)    │ │  (LangGraph)   │ │    Sink        │
+│                │ │                │ │  (SQLite DAG)  │
+│ - NIM          │ │ - Coder        │ │                │
+│ - Ollama       │ │ - Adversary    │ │ - Write-ahead  │
+│ - Fake         │ │ - Critic       │ │ - Integrity    │
+│ - Pacing       │ │ - Arbiter      │ │ - Replay       │
+└────────────────┘ │ - Gate (HITL)  │ └────────────────┘
+                   │ - Runner       │
+                   └────────────────┘
+                           │
+                           ▼
+              ┌────────────────────────┐
+              │      Worktree          │
+              │  (Isolated Git Clone)  │
+              └────────────────────────┘
+          </div>
+        </div>
+
+        <h3>Component Responsibilities</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4 class="card-title">Adapters (P4 Seam)</h4>
+            <p class="card-desc">Provider-agnostic LLM interface. NIM, Ollama, and Fake implementations with pacing circuit breaker.</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Graph (T3)</h4>
+            <p class="card-desc">LangGraph state machine with conditional edges, HITL gate, and verdict-based routing.</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Audit Sink (D2/D7)</h4>
+            <p class="card-desc">Fail-closed SQLite write-ahead log. Content hashing for replay determinism. Chain verification.</p>
+          </div>
+          <div class="card">
+            <h4 class="card-title">Runner (D5/D8)</h4>
+            <p class="card-desc">Git worktree isolation. Env scrubbing (secrets removed). Timeout kill on test hangs.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contributing">
+        <div class="section-header">
+          <h2>Contributing</h2>
+        </div>
+
+        <ol>
+          <li>Fork the repository</li>
+          <li>Create a feature branch: <code>git checkout -b feature/amazing-feature</code></li>
+          <li>Make your changes</li>
+          <li>Run tests: <code>uv run pytest -q</code></li>
+          <li>Run lint: <code>uv run ruff check .</code></li>
+          <li>Submit a Pull Request</li>
+        </ol>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 Development Tips</div>
+          <p>Use <code>uv run orchestrator "test task" --repo . --auto-approve</code> for quick iteration. Fake models are fast and don't need API keys.</p>
+        </div>
+      </section>
+
+      <section class="section" id="license">
+        <div class="section-header">
+          <h2>License & Links</h2>
+        </div>
+
+        <p><strong>License:</strong> MIT — Open source.</p>
+
+        <p><strong>Failure Zoo Data:</strong> Follows the license of each source repository (see <code>NOTICE</code> file).</p>
+
+        <div class="footer-links">
+          <a href="https://github.com/anujsingh-cse/orchestrator-of-three-cycles" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px; vertical-align: middle;">
+              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+            GitHub
+          </a>
+          <a href="https://build.nvidia.com" target="_blank">NVIDIA NIM</a>
+          <a href="https://langchain-ai.github.io/langgraph/" target="_blank">LangGraph</a>
+        </div>
+      </section>
+
+      <footer class="content-footer">
+        <p>Orchestrator of Three Cycles — Research Harness for Adversarial AI Code Fixes</p>
+        <div class="footer-links">
+          <a href="https://github.com/anujsingh-cse/orchestrator-of-three-cycles" target="_blank">GitHub</a>
+          <a href="https://build.nvidia.com" target="_blank">NVIDIA NIM</a>
+          <a href="https://langchain-ai.github.io/langgraph/" target="_blank">LangGraph</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Mobile sidebar toggle
+    const toggle = document.querySelector('.mobile-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = sidebar.classList.toggle('open');
+      overlay.classList.toggle('visible', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+
+    // Close sidebar on nav link click (mobile)
+    document.querySelectorAll('.nav-link, .nav-sublink').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('visible');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    // Active link highlighting based on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-100px 0px -66%' });
+
+    sections.forEach(section => observer.observe(section));
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
