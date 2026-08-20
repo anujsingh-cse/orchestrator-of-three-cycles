@@ -34,7 +34,13 @@ verdict: <pass|patch_fix|rubric_fail|replan|minor_fix|escalate|budget_exhausted>
 plus one short justification line. pass only when the patch is genuinely good."""
 
 
-def coder_prompt(task: str, attack: str, critique: str, round_no: int, file_context: dict[str, str] | None = None) -> list[dict[str, str]]:
+def coder_prompt(
+    task: str,
+    attack: str,
+    critique: str,
+    round_no: int,
+    file_context: dict[str, str] | None = None,
+) -> list[dict[str, str]]:
     context = f"Task: {task}"
     if file_context:
         context += "\n\n--- FILE CONTEXT (READ CAREFULLY - DO NOT INVENT FUNCTIONS) ---"

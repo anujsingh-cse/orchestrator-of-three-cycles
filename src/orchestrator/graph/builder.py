@@ -14,7 +14,6 @@ START -> recon -> coder -> adversary -> critic -> arbiter -> gate -> record_gate
 
 from __future__ import annotations
 
-import re
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -42,18 +41,18 @@ GATE_REJECT = "reject"
 
 def make_recon(worktree_root: Path) -> NodeFn:
     """Recon node: index worktree and retrieve relevant code for the task.
-    
+
     Uses the hybrid retrieval store (dense + sparse vectors with RRF fusion)
     to find code chunks relevant to the task description.
     """
     from orchestrator.retrieval.chunker import Chunker
     from orchestrator.retrieval.store import RetrievalQuery, RetrievalStore
-    
+
     # Initialize chunker and store (lazy, on first call)
     _chunker: Chunker | None = None
     _store: RetrievalStore | None = None
     _indexed = False
-    
+
     def _init():
         nonlocal _chunker, _store, _indexed
         if _indexed:
@@ -63,7 +62,7 @@ def make_recon(worktree_root: Path) -> NodeFn:
             # Use main repo's .orchestrator/retrieval for persistent index across sessions
             retrieval_path = worktree_root.parent.parent / ".orchestrator" / "retrieval"
             _store = RetrievalStore(retrieval_path)
-            
+
             # Index all Python/JS/TS files in worktree
             import subprocess
             result = subprocess.run(
@@ -71,13 +70,14 @@ def make_recon(worktree_root: Path) -> NodeFn:
                 capture_output=True, text=True, check=True
             )
             all_files = [worktree_root / f for f in result.stdout.strip().split("\n") if f]
-            code_files = [f for f in all_files if f.suffix in (".py", ".js", ".ts", ".mjs", ".jsx", ".tsx")]
-            
+            suffixes = (".py", ".js", ".ts", ".mjs", ".jsx", ".tsx")
+            code_files = [f for f in all_files if f.suffix in suffixes]
+
             if code_files:
                 chunks = _chunker.chunk_files(code_files)
                 if chunks:
                     _store.upsert_chunks(chunks)
-            
+
             _indexed = True
         except Exception as e:
             # If retrieval fails, continue without it
@@ -85,17 +85,17 @@ def make_recon(worktree_root: Path) -> NodeFn:
             _chunker = None
             _store = None
             _indexed = True
-    
+
     def recon(state: SessionState) -> dict[str, Any]:
         _init()
-        
+
         file_context = {}
         if _store and _chunker:
             try:
                 # Query with the task description
                 query = RetrievalQuery(text=state["task"], top_k=8)
                 results = _store.query(query)
-                
+
                 # Group by file for context
                 for r in results:
                     chunk = r.chunk
@@ -108,7 +108,7 @@ def make_recon(worktree_root: Path) -> NodeFn:
                         "signature": chunk.signature,
                         "content": chunk.content,
                     })
-                
+
                 # Format for prompt
                 formatted = {}
                 for path, chunks in file_context.items():
@@ -117,13 +117,13 @@ def make_recon(worktree_root: Path) -> NodeFn:
                         parts.append(f"# {c['lines']} {c['fqn'] or ''} {c['signature'] or ''}")
                         parts.append(c['content'])
                     formatted[path] = "\n\n".join(parts)
-                
+
                 return {"file_context": formatted}
             except Exception as e:
                 print(f"[recon] query failed: {e}")
-        
+
         return {"file_context": {}}
-    
+
     return recon
 
 
