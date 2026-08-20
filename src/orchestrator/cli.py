@@ -11,8 +11,6 @@ from typing import Any
 from dotenv import load_dotenv
 from langgraph.types import Command
 
-load_dotenv()  # loads .env from project root
-
 from orchestrator.adapters.llm.base import LLMAdapter
 from orchestrator.adapters.llm.fake import FakeAdapter
 from orchestrator.adapters.llm.nim import NIMAdapter
@@ -21,6 +19,8 @@ from orchestrator.audit.sink import AuditSink
 from orchestrator.graph.builder import GATE_APPROVE, build_session_graph
 from orchestrator.roster import MODEL_ROSTER, NIM_MEASURED_RPM
 from orchestrator.runner.worktree import create_worktree
+
+load_dotenv()  # loads .env from project root
 
 
 def build_adapters(use_nim: bool, api_key: str | None) -> dict[str, LLMAdapter]:
